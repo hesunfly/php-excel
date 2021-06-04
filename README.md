@@ -1,5 +1,7 @@
 # php-excel
 
+php excel 导入导出, 由于需要在 swoole 中使用，所以重新构建了该扩展包，主要去除了影响 swoole 运行的 exit() 和 die()，原地址：https://github.com/jianyan74/php-excel
+
 ## 安装
 
 ```
