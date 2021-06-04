@@ -1,6 +1,6 @@
 <?php
 
-namespace hesunfly\excel;
+namespace Hesunfly\Excel;
 
 use Exception;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
