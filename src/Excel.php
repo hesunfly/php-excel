@@ -1,6 +1,6 @@
 <?php
 
-namespace jianyan\excel;
+namespace hesunfly\excel;
 
 use Exception;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
@@ -16,9 +16,6 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 /**
  * 导出导入Excel
  *
- * Class Excel
- * @package jianyan\excel
- * @author jianyan74 <751393839@qq.com>
  */
 class Excel
 {
@@ -48,8 +45,8 @@ class Excel
         }
 
         // 清除之前的错误输出
-        ob_end_clean();
-        ob_start();
+//        ob_end_clean();
+//        ob_start();
 
         !$filename && $filename = time();
 
@@ -88,7 +85,6 @@ class Excel
                             } catch (\Exception $e) {
                                 echo $e->getMessage();
                                 echo '<br>可能是图片丢失了或者无权限';
-                                die;
                             }
 
                             $drawing->setWidth(80);
@@ -113,7 +109,6 @@ class Excel
                             } catch (\Exception $e) {
                                 echo $e->getMessage();
                                 echo '<br>可能是图片丢失了或者无权限';
-                                die;
                             }
 
                             $drawing->setWidth(80);
@@ -150,8 +145,6 @@ class Excel
                     header('Cache-Control: max-age=0');
                     $writer->save('php://output');
                 }
-                exit();
-
                 break;
             case 'xls' :
                 $writer = new Xls($spreadsheet);
@@ -163,8 +156,6 @@ class Excel
                     header('Cache-Control: max-age=0');
                     $writer->save('php://output');
                 }
-                exit();
-
                 break;
             case 'csv' :
                 $writer = new Csv($spreadsheet);
@@ -176,8 +167,6 @@ class Excel
                     header('Cache-Control: max-age=0');
                     $writer->save('php://output');
                 }
-                exit();
-
                 break;
             case 'html' :
                 $writer = new Html($spreadsheet);
@@ -189,12 +178,8 @@ class Excel
                     header('Cache-Control: max-age=0');
                     $writer->save('php://output');
                 }
-                exit();
-
                 break;
         }
-
-        return true;
     }
 
     /**
@@ -212,8 +197,8 @@ class Excel
         }
 
         // 清除之前的错误输出
-        ob_end_clean();
-        ob_start();
+//        ob_end_clean();
+//        ob_start();
 
         !$filename && $filename = time();
 
@@ -251,7 +236,6 @@ class Excel
         header("Content-type:text/csv");
         header("Content-Disposition:attachment; filename={$filename}.csv");
         echo $html;
-        exit();
     }
 
     /**

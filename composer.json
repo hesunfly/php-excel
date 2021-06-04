@@ -1,7 +1,7 @@
 {
 	"name": "hesunfly/php-excel",
 	"description": "php excel 导入导出, 由于需要在swoole中使用，所以重新构建了该扩展包，原地址：https://github.com/jianyan74/php-excel",
-	"keywords": ["excel", "csv", "xlsx", "xls", "html"],
+	"keywords": ["excel", "csv", "xlsx", "xls", "html", "swoole"],
 	"license": "MIT",
 	"authors": [
 		{
