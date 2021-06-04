@@ -11,7 +11,7 @@ composer require hesunfly/php-excel
 引入
 
 ```
-use hesunfly\excel\Excel;
+use Hesunfly\Excel\Excel;
 ```
 
 ## Demo
