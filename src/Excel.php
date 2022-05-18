@@ -97,7 +97,9 @@ class Excel
                             $img = self::curlGet($realData);
                             $file_info = pathinfo($realData);
                             $extension = $file_info['extension'];// 文件后缀
-                            $dir = '.' . DIRECTORY_SEPARATOR . 'execlImg' . DIRECTORY_SEPARATOR . \date('Y-m-d') . DIRECTORY_SEPARATOR;// 文件夹名
+                            $dir = '.' . DIRECTORY_SEPARATOR . 'execlImg' . DIRECTORY_SEPARATOR . \date(
+                                    'Y-m-d'
+                                ) . DIRECTORY_SEPARATOR;// 文件夹名
                             $basename = time() . mt_rand(1000, 9999) . '.' . $extension;// 文件名
                             is_dir($dir) or mkdir($dir, 0777, true); //进行检测文件夹是否存在
                             file_put_contents($dir . $basename, $img);
@@ -121,7 +123,18 @@ class Excel
                     } else {
                         // $sheet->setCellValue($rowR . $column, $realData);
                         // 写入excel
-                        $sheet->setCellValueExplicit(Coordinate::stringFromColumnIndex($span) . $column, $realData, DataType::TYPE_STRING);
+
+                        $datatype = DataType::TYPE_STRING;
+
+                        if (isset($value[2]) && ($value[2] == 'function.numeric' || $value[2] == 'text.numeric')) {
+                            $datatype = DataType::TYPE_NUMERIC;
+                        }
+
+                        $sheet->setCellValueExplicit(
+                            Coordinate::stringFromColumnIndex($span) . $column,
+                            $realData,
+                            $datatype
+                        );
                     }
 
 
@@ -140,7 +153,9 @@ class Excel
                 if (!empty($path)) {
                     $writer->save($path);
                 } else {
-                    header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;");
+                    header(
+                        "Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;"
+                    );
                     header("Content-Disposition: inline;filename=\"{$filename}.xlsx\"");
                     header('Cache-Control: max-age=0');
                     $writer->save('php://output');
@@ -255,7 +270,9 @@ class Excel
     {
         if ($hasImg) {
             if ($imageFilePath == null) {
-                $imageFilePath = '.' . DIRECTORY_SEPARATOR . 'execlImg' . DIRECTORY_SEPARATOR . \date('Y-m-d') . DIRECTORY_SEPARATOR;
+                $imageFilePath = '.' . DIRECTORY_SEPARATOR . 'execlImg' . DIRECTORY_SEPARATOR . \date(
+                        'Y-m-d'
+                    ) . DIRECTORY_SEPARATOR;
             }
             if (!file_exists($imageFilePath)) {
                 //如果目录不存在则递归创建
@@ -295,7 +312,9 @@ class Excel
         $returnData = $excleDatas ? array_shift($excleDatas) : [];
 
         // 第一行数据就是空的，为了保留其原始数据，第一行数据就不做array_fiter操作；
-        $returnData = $returnData && isset($returnData[$startRow]) && !empty($returnData[$startRow]) ? array_filter($returnData) : $returnData;
+        $returnData = $returnData && isset($returnData[$startRow]) && !empty($returnData[$startRow]) ? array_filter(
+            $returnData
+        ) : $returnData;
 
         return $returnData;
     }
@@ -327,6 +346,7 @@ class Excel
         switch ($array[2]) {
             // 文本
             case 'text' :
+            case 'text.numeric':
                 return $value;
                 break;
             // 日期
@@ -339,6 +359,7 @@ class Excel
                 break;
             // 匿名函数
             case  'function' :
+            case  'function.numeric' :
                 return isset($array[3]) ? call_user_func($array[3], $row) : null;
                 break;
             // 默认
